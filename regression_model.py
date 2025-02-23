@@ -7,6 +7,14 @@ class RegressionModel:
     def __init__(self, model):
         self.model = model
 
+
+    def train(self, traning_data, expected_data, epochs=10):
+        self.model.fit(traning_data, expected_data, epochs=epochs)
+    
+    def predict(self, data):
+        return self.model.predict(data)
+    
+
     @classmethod
     def create_model(cls):
         model = tf.keras.Sequential([
