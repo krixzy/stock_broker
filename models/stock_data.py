@@ -25,6 +25,10 @@ class StockData:
     def closing_price(self):
         return self.stock_data['Close']
     
+    def latest_stock_price(self):
+        return self.stock_data['Close'].iloc[-1]
+    
+    
     @classmethod
     def create_stock_data(cls, stock_name, start_day_in_days=300, end_day_in_days=0):
         start = (date.today() - timedelta(start_day_in_days)).strftime('%Y-%m-%d')

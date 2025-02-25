@@ -1,3 +1,4 @@
+import tensorflow as tf
 import yfinance as yf
 import pandas as pd
 from datetime import date, timedelta
@@ -6,7 +7,7 @@ import numpy as np
 
 
 
-from regression_model import RegressionModel
+from models.regression_model import RegressionModel
 
 Start = date.today() - timedelta(650)
 Start.strftime('%Y-%m-%d')
@@ -45,10 +46,15 @@ if __name__ == "__main__":
     test_data = spy['Close'][250:]
     X_train, y_train = create_dataset(traning_data)
     X_test, y_test = create_dataset(test_data)
-    model = RegressionModel.create_model()
+    model = tf.keras.Sequential([
+            tf.keras.layers.Dense(64, activation="relu", input_shape=(10,)),
+            tf.keras.layers.Dense(32, activation="relu"),
+            tf.keras.layers.Dense(1)
+        ])
+
+    model.compile(optimizer="adam", loss="mse")
     history = model.fit(x=X_train, y=y_train, epochs=20, batch_size=2, validation_split=0.2)
     predictions = model.predict(X_test)
-    print(history.history)
     plt.figure(figsize=(10, 5))
     plt.plot(history.history['loss'], label='Træningstab')
     plt.plot(history.history['val_loss'], label='Valideringstab')
